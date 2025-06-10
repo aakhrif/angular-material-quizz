@@ -1,0 +1,23 @@
+<div class="container">
+    <div *ngIf="quizzes.length">
+        <div *ngIf="currentQuizz as quizz">
+            <h2>{{ quizz.question }}</h2>
+
+            <mat-radio-group [(ngModel)]="selectedValue" *ngIf="!quizz.selectMultiple">
+                <mat-radio-button *ngFor="let choice of quizz.choices" [value]="choice.id"
+                    style="display: flex; align-items: center; margin-bottom: 8px;">
+                    <span style="color: black;">{{ choice.text }}</span> </mat-radio-button>
+            </mat-radio-group>
+
+            <div *ngIf="quizz.selectMultiple">
+                <mat-checkbox
+                    *ngFor="let choice of quizz.choices"
+                    [value]="choice.id"
+                    > {{ choice.text }}
+                </mat-checkbox>
+            </div>            
+        </div>
+
+        <button mat-button (click)="submitAnswer()">Submit</button>
+    </div>
+</div>

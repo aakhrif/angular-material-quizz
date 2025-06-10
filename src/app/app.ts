@@ -1,12 +1,19 @@
 import { Component } from '@angular/core';
+import { FormsModule, NgModel } from '@angular/forms';
 import { RouterOutlet } from '@angular/router';
+import { Quizzes } from './quizzes/quizzes';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, Quizzes],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
 export class App {
-  protected title = 'angular-libs';
+  constructor() {
+
+  }
+
+  protected title: string = 'angular-libs';
+  data: string[] = [];
 }
