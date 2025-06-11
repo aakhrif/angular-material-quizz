@@ -4,4 +4,30 @@
     padding: 16px;
     border: 1px solid red;
     margin-top: 150px;
+    height: 22rem;
+}
+
+.choice-radio {
+    display: flex;
+    align-items: center;
+}
+
+.correct {
+    color: green;
+}
+
+.wrong {
+    color: red;
+}
+
+.feedback-space {
+    min-height: 2rem;
+    margin-top: 1rem;
+    margin-left: .5rem;
+}
+
+.action-space {
+    min-height: 3rem;
+    margin-top: 1rem;
+    margin-left: .5rem;
 }

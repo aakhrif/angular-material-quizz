@@ -3,21 +3,30 @@
         <div *ngIf="currentQuizz as quizz">
             <h2>{{ quizz.question }}</h2>
 
-            <mat-radio-group [(ngModel)]="selectedValue" *ngIf="!quizz.selectMultiple">
-                <mat-radio-button *ngFor="let choice of quizz.choices" [value]="choice.id"
-                    style="display: flex; align-items: center; margin-bottom: 8px;">
+            <mat-radio-group [(ngModel)]="selectedValue" *ngIf="!quizz.selectMultiple" (change)="onSelectionChange()">
+                <mat-radio-button *ngFor="let choice of quizz.choices" [value]="choice.id" class="choice-radio">
                     <span style="color: black;">{{ choice.text }}</span> </mat-radio-button>
             </mat-radio-group>
 
             <div *ngIf="quizz.selectMultiple">
-                <mat-checkbox
-                    *ngFor="let choice of quizz.choices"
-                    [value]="choice.id"
-                    > {{ choice.text }}
+                <mat-checkbox *ngFor="let choice of quizz.choices" [value]="choice.id"> {{ choice.text }}
                 </mat-checkbox>
-            </div>            
-        </div>
+            </div>
 
-        <button mat-button (click)="submitAnswer()">Submit</button>
+            <div class="feedback-space">
+                <div *ngIf="answerChecked">
+                    <p [ngClass]="{ 'correct': isLastAnswerCorrect, 'wrong': !isLastAnswerCorrect}">
+                        {{ isLastAnswerCorrect ? '✅ Richtig!' : '❌ Falsch, versuch’s nochmal.' }}
+                    </p>
+                </div>
+            </div>
+
+            <div class="action-space">
+                <button *ngIf="!isLastAnswerCorrect && !quizz.selectMultiple" (click)="submitAnswer()"
+                    matButton="tonal" class="submit-btn"><mat-icon>input</mat-icon>Submit</button>
+
+                <button matButton *ngIf="isLastAnswerCorrect" (click)="goNext()">Go Next</button>
+            </div>
+        </div>
     </div>
 </div>
