@@ -9,7 +9,8 @@
             </mat-radio-group>
 
             <div *ngIf="quizz.selectMultiple">
-                <mat-checkbox *ngFor="let choice of quizz.choices" [value]="choice.id"> {{ choice.text }}
+                <mat-checkbox *ngFor="let choice of quizz.choices" [value]="choice.id"
+                    [checked]="selectedValues.includes(choice.id)" (change)="onCheckboxChange($event, choice.id)"> {{ choice.text }}
                 </mat-checkbox>
             </div>
 
@@ -22,7 +23,7 @@
             </div>
 
             <div class="action-space">
-                <button *ngIf="!isLastAnswerCorrect && !quizz.selectMultiple" (click)="submitAnswer()"
+                <button *ngIf="!isLastAnswerCorrect" (click)="submitAnswer()"
                     matButton="outlined" class="submit-btn"><mat-icon>input</mat-icon>Submit</button>
 
                 <button matButton="outlined" *ngIf="isLastAnswerCorrect" (click)="goNext()"><mat-icon>directions_run</mat-icon>Go Next</button>

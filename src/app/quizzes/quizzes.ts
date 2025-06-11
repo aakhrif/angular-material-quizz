@@ -18,48 +18,68 @@ import { MatIcon } from '@angular/material/icon';
 export class Quizzes {
   selectedValue: string = "";
   quizzes: Quiz[] = [];
-  currentQuizz: Quiz = {choices: [], id: 0, question: "", selectMultiple: false};
+  currentQuizz: Quiz = { choices: [], id: 0, question: "", selectMultiple: false };
   currentQuizzIndex: number = 0;
-  choice: Choice = {id: "", isCorrect: false, text: ""};
+  choice: Choice = { id: "", isCorrect: false, text: "" };
   answerChecked = false;
   isLastAnswerCorrect = false;
+  selectedValues: string[] = [];
 
-  constructor(private quizzesService: QuizzesService) {}
+  constructor(private quizzesService: QuizzesService) { }
 
   ngOnInit(): void {
     this.quizzesService.getQuizzes().subscribe(data => {
       this.quizzes = data;
-      this.currentQuizz =  this.quizzes[this.currentQuizzIndex];
+      this.currentQuizz = this.quizzes[this.currentQuizzIndex];
     });
   }
 
   submitAnswer(): void {
-    console.log('question ' + this.currentQuizz?.question);
-    console.log('choice text ' + this.choice.text);
-    console.log('selectedValue ' + this.selectedValue);
-    console.dir('currentQuizz ' + JSON.stringify(this.currentQuizz));
-    console.dir('choice ', this.choice);
-
+    this.answerChecked = true;
     if (!this.currentQuizz?.selectMultiple) {
-      const selectedAnswer = this.currentQuizz?.choices.find((choice) => choice.id === this.selectedValue);
-      this.answerChecked = true;
+      const selectedAnswer = this.currentQuizz?.choices.
+        find((choice) => choice.id === this.selectedValue);
+      
       if (selectedAnswer?.isCorrect) {
         this.isLastAnswerCorrect = true;
       } else {
         this.isLastAnswerCorrect = false;
       }
+    } else if (this.currentQuizz?.selectMultiple) {
+      const correctAnswers = this.currentQuizz?.choices
+        .filter(choice => choice.isCorrect)
+        .map(choice => choice.id);
+      if (correctAnswers.length === this.selectedValues.length 
+        && correctAnswers.every((val: string) => this.selectedValues.includes(val))) {
+          this.isLastAnswerCorrect = true;
+        } else {
+          this.isLastAnswerCorrect = false;
+        }
     }
   }
 
   goNext(): void {
+    this.selectedValues = [];
     this.currentQuizzIndex += 1;
     if (this.currentQuizzIndex < this.quizzes.length) {
       this.currentQuizz = this.quizzes[this.currentQuizzIndex];
     }
+    this.answerChecked = false;
+    this.isLastAnswerCorrect = false;
   }
 
   onSelectionChange() {
     this.isLastAnswerCorrect = false;
     this.answerChecked = false;
+  }
+
+  onCheckboxChange(event: any, choiceId: string) {
+    this.isLastAnswerCorrect = false;
+    this.answerChecked = false;
+    if (event.checked) {
+      this.selectedValues.push(choiceId);
+    } else {
+      this.selectedValues = this.selectedValues.filter(id => id !== choiceId);
+    }
   }
 }
