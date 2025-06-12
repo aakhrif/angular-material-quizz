@@ -1,26 +1,27 @@
-# Build Stage...
-FROM node:20-alpine AS builder
+# Stage 1: Build Angular App
+FROM node:20-alpine AS build
+
 WORKDIR /app
 
-# Installing...
 COPY package*.json ./
-RUN npm ci
+RUN npm install
 
-# Copy App...
 COPY . .
 
-# Build Production App...
-RUN npm run build -- --output-path=dist/app --configuration=production
+# Build Client und Server (SSR)
+RUN npm run build:ssr
 
-# Prepare nginx delivery...
-FROM nginx:alpine
-# Remove default nginx static files...
-RUN rm -rf /usr/share/nginx/html/*
+# Stage 2: Production Image
+FROM node:20-alpine
 
-# Building angular in nginx static folder...
-COPY --from=builder /app/dist/app /usr/share/nginx/html
+WORKDIR /app
 
-# COPY nginx.conf /etc/nginx/nginx.conf...
-EXPOSE 80
+# Copy nur den build Output & package.json + node_modules
+COPY --from=build /app/dist/angular-libs ./dist/angular-libs
+COPY --from=build /app/package*.json ./
+COPY --from=build /app/node_modules ./node_modules
 
-CMD ["nginx", "-g", "daemon off;"]
+EXPOSE 4000
+
+# Node starten, server.mjs ist der SSR Node Server
+CMD ["node", "dist/angular-libs/server/server.mjs"]

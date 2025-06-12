@@ -1,14 +1,14 @@
 version: '3'
 
 services:
-  angular-app:
+  angular-ssr:
     hostname: modakira.com
     build:
       context: .
       dockerfile: Dockerfile
     container_name: angular-frontend
     ports:
-      - "4300:80" # Lokal:4300 → Container:80 (NGINX)
+      - "4300:4000" # Lokal:4300 → Container:80 (NGINX)
     networks:
       - frontend-net
     restart: unless-stopped
