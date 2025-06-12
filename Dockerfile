@@ -16,12 +16,12 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-# Copy nur den build Output & package.json + node_modules
-COPY --from=build /app/dist/angular-libs ./dist/angular-libs
+# Nur das Nötigste kopieren
+COPY --from=build /app/.angular ./.angular
 COPY --from=build /app/package*.json ./
 COPY --from=build /app/node_modules ./node_modules
 
 EXPOSE 4000
 
-# Node starten, server.mjs ist der SSR Node Server
-CMD ["node", "dist/angular-libs/server/server.mjs"]
+# SSR Server starten
+CMD ["node", ".angular/server/server.mjs"]

@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "angular-ssr-im-test": {
+    "angular-libs": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,6 +17,7 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
+            "verbose": true,
             "browser": "src/main.ts",
             "polyfills": [
               "zone.js"
@@ -67,10 +68,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "angular-ssr-im-test:build:production"
+              "buildTarget": "angular-libs:build:production"
             },
             "development": {
-              "buildTarget": "angular-ssr-im-test:build:development"
+              "buildTarget": "angular-libs:build:development"
             }
           },
           "defaultConfiguration": "development"

@@ -8,8 +8,8 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:angular-libs": "node dist/angular-libs/server/server.mjs",
-    "build:ssr": "ng run angular-libs:server",
-    "serve:ssr": "node dist/angular-libs/server/server.mjs"
+    "build:ssr": "ng build",
+    "serve:ssr": "node .angular/angular-libs/server/server.mjs"
   },
   "private": true,
   "dependencies": {
