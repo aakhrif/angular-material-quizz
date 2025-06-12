@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatRadioModule } from '@angular/material/radio';
+import { MatRadioChange, MatRadioModule } from '@angular/material/radio';
 import { QuizzesService } from './quizzes.service';
-import { Choice, Quiz } from './interfaces';
+import { Quiz } from './interfaces';
 import { MatCheckbox, MatCheckboxChange } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
@@ -15,69 +15,115 @@ import { MatIcon } from '@angular/material/icon';
   templateUrl: './quizzes.html',
   styleUrl: './quizzes.scss'
 })
+/**
+Central, reactive state in signal<...>()
+
+A computed() property for the current quiz
+
+The class is clear, minimal, and testable
+
+All UI changes automatically follow the state
+*/
 export class Quizzes {
-  selectedSingleChoice: string = "";
-  quizzes: Quiz[] = [];
-  currentQuizz: Quiz = { choices: [], id: 0, question: "", selectMultiple: false };
-  currentQuizzIndex: number = 0;
-  choice!: Choice;
-  answerChecked = false;
-  isLastAnswerCorrect = false;
-  selectedSingleChoices: string[] = [];
+  state = signal<{
+    quizzes: Quiz[],
+    currentIndex: number,
+    selectedSingleChoice: string,
+    selectedMultiChoices: string[],
+    answerChecked: boolean,
+    isLastAnswerCorrect: boolean
+  }>({
+    quizzes: [] as Quiz[],
+    currentIndex: 0,
+    selectedSingleChoice: '',
+    selectedMultiChoices: [] as string[],
+    answerChecked: false,
+    isLastAnswerCorrect: false
+  });
+
+  currentQuiz = computed(() => {
+    const s = this.state();
+    return s.quizzes[s.currentIndex];
+  });
+
+  readonly selectedSingleChoice = computed(() => this.state().selectedSingleChoice);
+  readonly selectedMultiChoices = computed(() => this.state().selectedMultiChoices);
+  readonly answerChecked = computed(() => this.state().answerChecked);
+  readonly isLastAnswerCorrect = computed(() => this.state().isLastAnswerCorrect);
+  readonly quizzes = computed(() => this.state().quizzes);
+
 
   constructor(private quizzesService: QuizzesService) { }
 
   ngOnInit(): void {
-    this.quizzesService.getQuizzes().subscribe(data => {
-      this.quizzes = data;
-      this.currentQuizz = this.quizzes[this.currentQuizzIndex];
+    this.quizzesService.getQuizzes().subscribe(data => { 
+      this.state.update(s => ({
+        ...s,
+        quizzes: data
+      }));
     });
   }
 
   submitAnswer(): void {
-    this.answerChecked = true;
-    if (!this.currentQuizz?.selectMultiple) {
-      const selectedAnswer = this.currentQuizz?.choices.
-        find((choice) => choice.id === this.selectedSingleChoice);
-      
-      if (selectedAnswer?.isCorrect) {
-        this.isLastAnswerCorrect = true;
-      }
+    const quiz = this.currentQuiz();
+    const { selectedSingleChoice, selectedMultiChoices } = this.state();
+
+    let isCorrect = false;
+
+    if (!quiz.selectMultiple) {
+      const selected = quiz.choices.find(c => c.id === selectedSingleChoice);
+      isCorrect = !!selected?.isCorrect;
     } else {
-      const correctAnswers = this.currentQuizz?.choices
-        .filter(choice => choice.isCorrect)
-        .map(choice => choice.id);
-      if (correctAnswers.length === this.selectedSingleChoices.length 
-        && correctAnswers.every((val: string) => this.selectedSingleChoices.includes(val))) {
-          this.isLastAnswerCorrect = true;
-        }
+      const correctIds = quiz.choices.filter(c => c.isCorrect).map(c => c.id);
+      isCorrect = (
+        correctIds.length === selectedMultiChoices.length &&
+        correctIds.every(id => selectedMultiChoices.includes(id))
+      );
     }
+
+    this.state.update(s => ({
+      ...s,
+      answerChecked: true,
+      isLastAnswerCorrect: isCorrect
+    }));
   }
 
   goNext(): void {
-    this.selectedSingleChoices = [];
-    if (this.currentQuizzIndex < this.quizzes.length) {
-      this.currentQuizzIndex += 1;
-      this.currentQuizz = this.quizzes[this.currentQuizzIndex];
-    }
-    this.answerChecked = false;
-    this.isLastAnswerCorrect = false;
+    this.state.update(s => {
+      const nextIndex = s.currentIndex + 1;
+      const isEnd = nextIndex >= s.quizzes.length;
+
+      return {
+        ...s,
+        currentIndex: isEnd ? s.currentIndex : nextIndex,
+        selectedSingleChoice: '',
+        selectedMultiChoices: [],
+        answerChecked: false,
+        isLastAnswerCorrect: false
+      };
+    });
   }
 
-  onSelectionChange() {
-    this.isLastAnswerCorrect = false;
-    this.answerChecked = false;
+  onSelectionChange(event: MatRadioChange): void {
+    this.state.update(s => ({
+      ...s,
+      selectedSingleChoice: event.value,
+      answerChecked: false,
+      isLastAnswerCorrect: false
+    }));
   }
 
-  onCheckboxChange(event: MatCheckboxChange, choiceId: string) {
-    this.isLastAnswerCorrect = false;
-    this.answerChecked = false;
-    if (event.checked) {
-      if (!this.selectedSingleChoices.includes(choiceId)) {
-        this.selectedSingleChoices.push(choiceId);
-      }
-    } else {
-      this.selectedSingleChoices = this.selectedSingleChoices.filter(id => id !== choiceId);
-    }
+  onCheckboxChange(event: MatCheckboxChange, choiceId: string): void {
+    this.state.update(s => {
+      const selected = new Set(s.selectedMultiChoices);
+      event.checked ? selected.add(choiceId) : selected.delete(choiceId);
+
+      return {
+        ...s,
+        selectedMultiChoices: Array.from(selected),
+        answerChecked: false,
+        isLastAnswerCorrect: false
+      };
+    });
   }
 }

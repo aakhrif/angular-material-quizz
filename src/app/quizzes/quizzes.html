@@ -1,33 +1,67 @@
 <div class="container">
-    <div *ngIf="quizzes.length">
-        <div *ngIf="currentQuizz as quizz">
-            <h2>{{ quizz.question }}</h2>
+  <div *ngIf="quizzes().length">
+    <div *ngIf="currentQuiz() as quiz">
+      <h2>{{ quiz.question }}</h2>
 
-            <mat-radio-group [(ngModel)]="selectedSingleChoice" *ngIf="!quizz.selectMultiple" (change)="onSelectionChange()">
-                <mat-radio-button *ngFor="let choice of quizz.choices" [value]="choice.id" class="choice-radio">
-                    <span class="choice">{{ choice.text }}</span> </mat-radio-button>
-            </mat-radio-group>
+      <!-- Einzelauswahl (Radio Buttons) -->
+      <mat-radio-group
+        *ngIf="!quiz.selectMultiple"
+        [value]="selectedSingleChoice()"
+        (change)="onSelectionChange($event)"
+      >
+        <mat-radio-button
+          *ngFor="let choice of quiz.choices"
+          [value]="choice.id"
+          class="choice-radio"
+        >
+          <span class="choice">{{ choice.text }}</span>
+        </mat-radio-button>
+      </mat-radio-group>
 
-            <div *ngIf="quizz.selectMultiple">
-                <mat-checkbox *ngFor="let choice of quizz.choices" [value]="choice.id"
-                    [checked]="selectedSingleChoices.includes(choice.id)" (change)="onCheckboxChange($event, choice.id)"> {{ choice.text }}
-                </mat-checkbox>
-            </div>
+      <!-- Mehrfachauswahl (Checkboxes) -->
+      <div *ngIf="quiz.selectMultiple">
+        <mat-checkbox
+          *ngFor="let choice of quiz.choices"
+          [checked]="selectedMultiChoices().includes(choice.id)"
+          (change)="onCheckboxChange($event, choice.id)"
+        >
+          {{ choice.text }}
+        </mat-checkbox>
+      </div>
 
-            <div class="feedback-space">
-                <div *ngIf="answerChecked">
-                    <p [ngClass]="{ 'correct': isLastAnswerCorrect, 'wrong': !isLastAnswerCorrect}">
-                        {{ isLastAnswerCorrect ? '✅ Correct!' : '❌ Wrong, Try again!' }}
-                    </p>
-                </div>
-            </div>
-
-            <div class="action-space">
-                <button *ngIf="!isLastAnswerCorrect" (click)="submitAnswer()"
-                    matButton="outlined" class="submit-btn"><mat-icon>input</mat-icon>Submit</button>
-
-                <button matButton="outlined" *ngIf="isLastAnswerCorrect" (click)="goNext()"><mat-icon>directions_run</mat-icon>Go Next</button>
-            </div>
+      <!-- Feedback -->
+      <div class="feedback-space">
+        <div *ngIf="answerChecked()">
+          <p
+            [ngClass]="{
+              correct: isLastAnswerCorrect(),
+              wrong: !isLastAnswerCorrect()
+            }"
+          >
+            {{ isLastAnswerCorrect() ? '✅ Correct!' : '❌ Wrong, Try again!' }}
+          </p>
         </div>
+      </div>
+
+      <!-- Aktionen -->
+      <div class="action-space">
+        <button
+          *ngIf="!isLastAnswerCorrect()"
+          (click)="submitAnswer()"
+          matButton="outlined"
+          class="submit-btn"
+        >
+          <mat-icon>input</mat-icon>Submit
+        </button>
+
+        <button
+          *ngIf="isLastAnswerCorrect()"
+          (click)="goNext()"
+          matButton="outlined"
+        >
+          <mat-icon>directions_run</mat-icon>Go Next
+        </button>
+      </div>
     </div>
+  </div>
 </div>
