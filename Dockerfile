@@ -1,0 +1,26 @@
+# Build Stage...
+FROM node:20-alpine AS builder
+WORKDIR /app
+
+# Installing...
+COPY package*.json ./
+RUN npm ci
+
+# Copy App...
+COPY . .
+
+# Build Production App...
+RUN npm run build -- --output-path=dist/app --configuration=production
+
+# Prepare nginx delivery...
+FROM nginx:alpine
+# Remove default nginx static files...
+RUN rm -rf /usr/share/nginx/html/*
+
+# Building angular in nginx static folder...
+COPY --from=builder /app/dist/app /usr/share/nginx/html
+
+# COPY nginx.conf /etc/nginx/nginx.conf...
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
