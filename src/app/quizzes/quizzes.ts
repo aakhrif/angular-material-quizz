@@ -5,7 +5,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatRadioModule } from '@angular/material/radio';
 import { QuizzesService } from './quizzes.service';
 import { Choice, Quiz } from './interfaces';
-import { MatCheckbox } from '@angular/material/checkbox';
+import { MatCheckbox, MatCheckboxChange } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 
@@ -16,14 +16,14 @@ import { MatIcon } from '@angular/material/icon';
   styleUrl: './quizzes.scss'
 })
 export class Quizzes {
-  selectedValue: string = "";
+  selectedSingleChoice: string = "";
   quizzes: Quiz[] = [];
   currentQuizz: Quiz = { choices: [], id: 0, question: "", selectMultiple: false };
   currentQuizzIndex: number = 0;
-  choice: Choice = { id: "", isCorrect: false, text: "" };
+  choice!: Choice;
   answerChecked = false;
   isLastAnswerCorrect = false;
-  selectedValues: string[] = [];
+  selectedSingleChoices: string[] = [];
 
   constructor(private quizzesService: QuizzesService) { }
 
@@ -38,30 +38,26 @@ export class Quizzes {
     this.answerChecked = true;
     if (!this.currentQuizz?.selectMultiple) {
       const selectedAnswer = this.currentQuizz?.choices.
-        find((choice) => choice.id === this.selectedValue);
+        find((choice) => choice.id === this.selectedSingleChoice);
       
       if (selectedAnswer?.isCorrect) {
         this.isLastAnswerCorrect = true;
-      } else {
-        this.isLastAnswerCorrect = false;
       }
-    } else if (this.currentQuizz?.selectMultiple) {
+    } else {
       const correctAnswers = this.currentQuizz?.choices
         .filter(choice => choice.isCorrect)
         .map(choice => choice.id);
-      if (correctAnswers.length === this.selectedValues.length 
-        && correctAnswers.every((val: string) => this.selectedValues.includes(val))) {
+      if (correctAnswers.length === this.selectedSingleChoices.length 
+        && correctAnswers.every((val: string) => this.selectedSingleChoices.includes(val))) {
           this.isLastAnswerCorrect = true;
-        } else {
-          this.isLastAnswerCorrect = false;
         }
     }
   }
 
   goNext(): void {
-    this.selectedValues = [];
-    this.currentQuizzIndex += 1;
+    this.selectedSingleChoices = [];
     if (this.currentQuizzIndex < this.quizzes.length) {
+      this.currentQuizzIndex += 1;
       this.currentQuizz = this.quizzes[this.currentQuizzIndex];
     }
     this.answerChecked = false;
@@ -73,13 +69,15 @@ export class Quizzes {
     this.answerChecked = false;
   }
 
-  onCheckboxChange(event: any, choiceId: string) {
+  onCheckboxChange(event: MatCheckboxChange, choiceId: string) {
     this.isLastAnswerCorrect = false;
     this.answerChecked = false;
     if (event.checked) {
-      this.selectedValues.push(choiceId);
+      if (!this.selectedSingleChoices.includes(choiceId)) {
+        this.selectedSingleChoices.push(choiceId);
+      }
     } else {
-      this.selectedValues = this.selectedValues.filter(id => id !== choiceId);
+      this.selectedSingleChoices = this.selectedSingleChoices.filter(id => id !== choiceId);
     }
   }
 }

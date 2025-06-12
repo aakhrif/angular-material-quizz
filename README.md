@@ -1,5 +1,15 @@
 ![Thumbnail](./thumbnail.png)
 
+| Layer                        | Tool                                                                 |
+| ---------------------------- | ------------------------------------------------------------------------- |
+| **Component-local State**    | 🔹 **Signals** – reaktiv, performant, einfach, ideal für UI-Interaktionen |
+| **Shared State (App-weit)**  | 🔹 **NgRx Signal Store** *(neuer Store auf Signals)* ODER                 |
+|                              | 🔹 **Angular Signal Inputs/Outputs + Services mit Signals**               |
+| **Side Effects / API Calls** | 🔹 **Effects (NgRx Signal Store)** oder **Services mit `inject()`**       |
+| **Feature-Modularisierung**  | 🔹 **Standalone Components + Route-basiertes Lazy Loading**               |
+| **Formulare & Validierung**  | 🔹 **Reactive Forms** (Template Forms für kleine Fälle, sonst vermeiden)  |
+| **Styling & UI**             | 🔹 **SCSS oder Tailwind**, gutes Designsystem wie **Material** nutzen     |
+
 
 # AngularLibs
 

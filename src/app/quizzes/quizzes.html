@@ -3,14 +3,14 @@
         <div *ngIf="currentQuizz as quizz">
             <h2>{{ quizz.question }}</h2>
 
-            <mat-radio-group [(ngModel)]="selectedValue" *ngIf="!quizz.selectMultiple" (change)="onSelectionChange()">
+            <mat-radio-group [(ngModel)]="selectedSingleChoice" *ngIf="!quizz.selectMultiple" (change)="onSelectionChange()">
                 <mat-radio-button *ngFor="let choice of quizz.choices" [value]="choice.id" class="choice-radio">
                     <span class="choice">{{ choice.text }}</span> </mat-radio-button>
             </mat-radio-group>
 
             <div *ngIf="quizz.selectMultiple">
                 <mat-checkbox *ngFor="let choice of quizz.choices" [value]="choice.id"
-                    [checked]="selectedValues.includes(choice.id)" (change)="onCheckboxChange($event, choice.id)"> {{ choice.text }}
+                    [checked]="selectedSingleChoices.includes(choice.id)" (change)="onCheckboxChange($event, choice.id)"> {{ choice.text }}
                 </mat-checkbox>
             </div>
 
