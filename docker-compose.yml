@@ -8,7 +8,7 @@ services:
       dockerfile: Dockerfile
     container_name: angular-frontend
     ports:
-      - "4000:80" # Lokal:4000 → Container:80 (NGINX)
+      - "4300:80" # Lokal:4300 → Container:80 (NGINX)
     networks:
       - frontend-net
     restart: unless-stopped
