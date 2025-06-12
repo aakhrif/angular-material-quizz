@@ -1,4 +1,4 @@
-name: Deploy Nuxt SSR Frontend
+name: Deploy Angular Main
 
 on:
   push:
@@ -25,5 +25,5 @@ jobs:
             git pull origin main
             docker compose -f docker-compose.yml build --no-cache
             docker compose -f docker-compose.yml up -d
-            # To do ...
+            # To do ....
           EOF
