@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "angular-libs": {
+    "angular-ssr-im-test": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -65,15 +65,12 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
-          "options": {
-            "proxyConfig": "proxy.conf.json"
-          },
           "configurations": {
             "production": {
-              "buildTarget": "angular-libs:build:production"
+              "buildTarget": "angular-ssr-im-test:build:production"
             },
             "development": {
-              "buildTarget": "angular-libs:build:development"
+              "buildTarget": "angular-ssr-im-test:build:development"
             }
           },
           "defaultConfiguration": "development"
