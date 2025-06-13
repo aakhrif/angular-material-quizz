@@ -21,7 +21,7 @@ jobs:
       - name: Deploy via SSH
         run: |
           ssh -i key -o StrictHostKeyChecking=no spectres@${{ secrets.DEPLOY_HOST }} << 'EOF'
-            cd /home/spectres/angular-main
+            cd /home/spectres/angular-libs
             git pull origin main
             docker compose -f docker-compose.yml build --no-cache
             docker compose -f docker-compose.yml up -d
