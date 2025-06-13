@@ -2,4 +2,4 @@
     <app-quiz-selector [topics]="topics()" (selectTopic)="onTopicSelected($event)" />
 </div>
 
-<h3>Filtered Quizzes ({{ selectedTopic() }}): {{ filteredQuizzes()[0] | json }}</h3>
+<app-quizzes [filteredQuizzes]="filteredQuizzes()" />
