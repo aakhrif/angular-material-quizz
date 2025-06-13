@@ -3,10 +3,16 @@ export interface Quiz {
     question: string,
     selectMultiple: boolean,
     choices: Array<Choice>
+    topicId: string
 }
 
 export interface Choice {
     id: string,
     isCorrect: boolean,
     text: string
+}
+
+export interface Topic {
+    id: string,
+    name: string
 }

@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { Quiz } from "./interfaces";
+import { Quiz } from "../shared/models/interfaces";
 
 @Injectable({ providedIn: 'root' })
 export class QuizzesService {
