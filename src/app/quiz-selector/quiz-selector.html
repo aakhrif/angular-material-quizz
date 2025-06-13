@@ -1,7 +1,4 @@
-
-<div class="menu">
-    <button *ngFor="let topic of topics"
-        (click)="selectTopic.emit(topic.id)"
-        class="menu-card"
-        > {{topic.name}} </button>
+<div class="container">
+        <button matButton="outlined" *ngFor="let topic of topics" (click)="selectTopic.emit(topic.id)"
+            class="menu-card"><mat-icon>Input</mat-icon> {{topic.name}} </button>
 </div>

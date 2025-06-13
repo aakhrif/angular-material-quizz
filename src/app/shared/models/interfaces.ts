@@ -1,3 +1,7 @@
+export interface QuizzesByTopic {
+    [topicId: string]: Quiz[]
+}
+
 export interface Quiz {
     id: number,
     question: string,

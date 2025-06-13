@@ -1,45 +1,50 @@
-import { CommonModule } from '@angular/common';
-import { Component, computed, signal } from '@angular/core';
+import { CommonModule, JsonPipe } from '@angular/common';
+import { Component, computed, effect, signal } from '@angular/core';
 import { QuizSelector } from '../quiz-selector/quiz-selector';
-import { Quizzes } from '../quizzes/quizzes';
-import { Quiz, Topic } from '../shared/models/interfaces';
+import { Quiz, QuizzesByTopic, Topic } from '../shared/models/interfaces';
 import { QuizzesService } from '../quizzes/quizzes.service';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-quiz-host',
-  imports: [CommonModule, FormsModule, QuizSelector],
+  imports: [CommonModule, FormsModule, QuizSelector, JsonPipe],
   templateUrl: './quiz-host.html',
   styleUrl: './quiz-host.scss'
 })
 export class QuizHost {
-  topics = signal<Topic[]>([
-    { id: 'aws', name: 'AWS'},
-    { id: 'js', name: 'JavaScript'},
-    { id: 'ng', name: 'Angular'},
+  readonly topics = signal<Topic[]>([
+    { id: 'aws', name: 'AWS' },
+    { id: 'js', name: 'JavaScript' },
+    { id: 'ng', name: 'Angular' },
   ]);
 
-  currentIndex = signal(0);
+  readonly currentIndex = signal(0);
+  readonly selectedTopic = signal('aws');
+  readonly quizzes = signal<QuizzesByTopic>({});
 
-  quizzes = signal<Quiz[]>([])
+  // readonly filteredQuizzes = computed(() =>
+  //   this.quizzes().filter(q => q.topicId === this.selectedTopic())
+  // );
 
-  selectedTopic = signal<string>('aws');
-  
-  filteredQuizzes = computed(() =>
-    this.quizzes().filter(q => q.topicId === this.selectedTopic())
-  );
+  readonly filteredQuizzes = computed(() => {
+    const quizzesByTopic = this.quizzes();
+    const topicId = this.selectedTopic();
+    return quizzesByTopic[topicId] ?? []
+  });
 
   constructor(private quizzesService: QuizzesService) {
     this.quizzesService.getQuizzes().subscribe(data => this.quizzes.set(data));
-    this.topics = signal<Topic[]>([
-    { id: 'aws', name: 'AWS'},
-    { id: 'js', name: 'JavaScript'},
-    { id: 'ng', name: 'Angular'},
-  ]);
+    
+    console.log('this.quizzes ', this.quizzes())
+    // Debug-Ausgabe:
+    effect(() => {
+      console.log('🔄 Filtered quizzes für Topic:', this.selectedTopic());
+      console.table(this.filteredQuizzes());
+    });
   }
 
   onTopicSelected(topicId: string) {
-    console.log('hier als nächstes schauen topic id wird richtig gesetzt ', topicId)
+    console.log('✅ Topic gewählt:', topicId);
     this.selectedTopic.set(topicId);
   }
 }
