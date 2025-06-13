@@ -11,7 +11,7 @@ services:
       - "4300:4000" # Lokal:4300 → Container:80 (NGINX)
     networks:
       - frontend-net
-    restart: unless-stopped
+    # restart: unless-stopped
 
 networks:
   frontend-net:
