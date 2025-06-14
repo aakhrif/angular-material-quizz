@@ -3,10 +3,11 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Topic } from '../shared/models/interfaces';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
+import { TechIcon } from '../tech-icon/tech-icon';
 
 @Component({
   selector: 'app-quiz-selector',
-  imports: [CommonModule, MatButtonModule, MatIcon],
+  imports: [CommonModule, MatButtonModule, TechIcon],
   templateUrl: './quiz-selector.html',
   styleUrl: './quiz-selector.scss'
 })

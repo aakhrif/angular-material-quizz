@@ -20,3 +20,11 @@ export interface Topic {
     id: string,
     name: string
 }
+
+export const TECH_ICONS: Record<string, string> = {
+    js: 'assets/icons/js.svg',
+    php: 'assets/icons/php.svg',
+    aws: 'assets/icons/aws.svg',
+    ng: 'assets/icons/ng.svg',
+    docker: 'assets/icons/docker.svg',
+};
