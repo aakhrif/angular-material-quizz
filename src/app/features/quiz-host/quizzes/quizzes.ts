@@ -53,12 +53,7 @@ export class Quizzes {
   readonly isLastAnswerCorrect = computed(() => this.state().isLastAnswerCorrect);
   readonly quizzes = computed(() => this.state().filteredQuizzes);
 
-
   constructor() { }
-
-  ngOnInit(): void {
-    console.log('filteredQuizzes ', this.filteredQuizzes);
-  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['filteredQuizzes']) {

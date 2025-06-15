@@ -47,6 +47,14 @@ app.use((req, res, next) => {
     .catch(next);
 });
 
+app.use('/api/quizzes-topics', (req, res) => {
+  res.json([
+    { id: 'aws', name: 'AWS' },
+    { id: 'js', name: 'JavaScript' },
+    { id: 'ng', name: 'Angular' },
+  ]);
+});
+
 app.use('/api/quizzes', (req, res) => {
   res.json({
     js: [

@@ -12,10 +12,6 @@ export class TechIcon {
   @Input({ required: true }) type!: string;
   
 
-  ngOnInit(): void {
-    console.log('type ', this.type)
-  }
-
   get iconPath(): string | null {
     return TECH_ICONS[this.type] ?? null;
   }
