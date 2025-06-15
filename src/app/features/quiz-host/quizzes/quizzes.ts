@@ -3,7 +3,7 @@ import { Component, computed, Input, signal, SimpleChanges } from '@angular/core
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatRadioChange, MatRadioModule } from '@angular/material/radio';
-import { Quiz } from '../shared/models/interfaces';
+import { Quiz } from '../../../shared/models/interfaces';
 import { MatCheckbox, MatCheckboxChange } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';

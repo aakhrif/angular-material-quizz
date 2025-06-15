@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, Signal, signal } from '@angular/core';
-import { QuizSelector } from '../quiz-selector/quiz-selector';
-import { Quiz, QuizzesByTopic, Topic } from '../shared/models/interfaces';
-import { QuizzesService } from '../quizzes/quizzes.service';
+import { QuizSelector } from './quiz-selector/quiz-selector';
+import { Quiz, QuizzesByTopic, Topic } from '../../shared/models/interfaces';
+import { QuizzesService } from './quizzes/quizzes.service';
 import { FormsModule } from '@angular/forms';
-import { Quizzes } from '../quizzes/quizzes';
+import { Quizzes } from './quizzes/quizzes';
 
 @Component({
   selector: 'app-quiz-host',

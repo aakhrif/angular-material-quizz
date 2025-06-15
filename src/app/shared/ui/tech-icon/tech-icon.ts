@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { TECH_ICONS } from '../shared/models/interfaces';
+import { TECH_ICONS } from '../../models/interfaces';
 import { CommonModule } from '@angular/common';
 
 @Component({
