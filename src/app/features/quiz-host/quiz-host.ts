@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, Signal, signal } from '@angular/core';
+import { Component, Signal } from '@angular/core';
 import { QuizSelector } from './quiz-selector/quiz-selector';
-import { Quiz, QuizzesByTopic, Topic } from '../../shared/models/interfaces';
+import { Quiz, QuizLevel, Topic } from '../../shared/models/interfaces';
 import { FormsModule } from '@angular/forms';
 import { Quizzes } from './quizzes/quizzes';
 import { SessionStateService } from '../../shared/services/session-state-service';
@@ -13,31 +13,21 @@ import { SessionStateService } from '../../shared/services/session-state-service
   styleUrl: './quiz-host.scss'
 })
 export class QuizHost {
-  readonly selectedTopic!: Signal<string>;
-  readonly currentIndex = signal(0);
-  readonly quizzes = signal<QuizzesByTopic>({});
-  readonly topics = signal<Topic[]>([]);
-
-  readonly filteredQuizzes: Signal<Quiz[]> = computed(() => {
-    const quizzesByTopic = this.quizzes();
-    const topicId = this.selectedTopic();
-    return quizzesByTopic[topicId] ?? []
-  });
+  readonly selectedTopic: Signal<string>;
+  readonly filteredQuizzes: Signal<Quiz[]>;
+  readonly topics: Signal<Topic[]>;
 
   constructor(private sessionStateService: SessionStateService) {
-    this.sessionStateService.getTopics().subscribe(data => this.topics.set(data));
-    this.sessionStateService.getQuizzes().subscribe(data => this.quizzes.set(data));
     this.selectedTopic = this.sessionStateService.selectedTopic;
-    console.log('thisQuizzes ', this.quizzes())
+    this.filteredQuizzes = this.sessionStateService.getFilteredQuizzes();
+    this.topics = this.sessionStateService.topics;
   }
 
   onTopicSelected(topicId: string) {
-    console.log('topicId ', topicId)
     this.sessionStateService.selectedTopic.set(topicId);
   }
 
   onLevelSelected(level: string) {
-    console.log('level ', level);
-    this.sessionStateService.selectedLevel.set(level);
+    this.sessionStateService.selectedLevel.set(level as QuizLevel);
   }
 }
