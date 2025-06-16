@@ -12,7 +12,7 @@ import { TechIcon } from '../../../shared/ui/tech-icon/tech-icon';
 })
 
 export class QuizSelector {
-  levels: QuizLevel[] = Object.values(QuizLevel);
+  @Input() levels: QuizLevel[] = [];
   @Input() topics: Topic[] = [];
   @Output() selectTopic = new EventEmitter<string>();
   @Output() selectLevel = new EventEmitter<string>();

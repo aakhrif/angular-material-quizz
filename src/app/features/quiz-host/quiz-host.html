@@ -1,4 +1,4 @@
-<app-quiz-selector [topics]="topics()"
+<app-quiz-selector [topics]="topics()" [levels]="levels()"
     (selectTopic)="onTopicSelected($event)"
     (selectLevel)="onLevelSelected($event)"/>
-<app-quizzes [filteredQuizzes]="filteredQuizzes()" />
+<app-quizzes />

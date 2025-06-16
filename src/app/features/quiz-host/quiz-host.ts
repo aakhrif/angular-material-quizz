@@ -16,11 +16,13 @@ export class QuizHost {
   readonly selectedTopic: Signal<string>;
   readonly filteredQuizzes: Signal<Quiz[]>;
   readonly topics: Signal<Topic[]>;
+  readonly levels: Signal<QuizLevel[]>;
 
   constructor(private sessionStateService: SessionStateService) {
     this.selectedTopic = this.sessionStateService.selectedTopic;
     this.filteredQuizzes = this.sessionStateService.getFilteredQuizzes();
     this.topics = this.sessionStateService.topics;
+    this.levels = this.sessionStateService.levels;
   }
 
   onTopicSelected(topicId: string) {
