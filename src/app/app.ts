@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { QuizHost } from './features/quiz-host/quiz-host';
+import { Userboard } from './features/userboard/userboard';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, QuizHost],
+  imports: [RouterOutlet, QuizHost, Userboard],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

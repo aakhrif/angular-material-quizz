@@ -1,0 +1,22 @@
+<div class="userboard-card">
+  <div class="userboard-section">
+    <div class="userboard-label">Topics</div>
+    <div class="userboard-values">
+      <span *ngFor="let topic of makedTopics()" class="chip">{{ topic }}</span>
+    </div>
+  </div>
+
+  <div class="userboard-section">
+    <div class="userboard-label">Level</div>
+    <div class="userboard-values">
+      <span>{{ level() }}</span>
+    </div>
+  </div>
+
+  <div class="userboard-section">
+    <div class="userboard-label">Score</div>
+    <div class="userboard-values">
+      <span>{{ score() }}</span>
+    </div>
+  </div>
+</div>

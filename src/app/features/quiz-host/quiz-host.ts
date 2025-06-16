@@ -5,6 +5,7 @@ import { Quiz, QuizzesByTopic, Topic } from '../../shared/models/interfaces';
 import { QuizHostService } from './quiz-host.service';
 import { FormsModule } from '@angular/forms';
 import { Quizzes } from './quizzes/quizzes';
+import { SessionStateService } from '../../shared/services/session-state-service';
 
 @Component({
   selector: 'app-quiz-host',
@@ -13,8 +14,8 @@ import { Quizzes } from './quizzes/quizzes';
   styleUrl: './quiz-host.scss'
 })
 export class QuizHost {
+  readonly selectedTopic!: Signal<string>;
   readonly currentIndex = signal(0);
-  readonly selectedTopic = signal('aws');
   readonly quizzes = signal<QuizzesByTopic>({});
   readonly topics = signal<Topic[]>([]);
 
@@ -24,12 +25,14 @@ export class QuizHost {
     return quizzesByTopic[topicId] ?? []
   });
 
-  constructor(private quizHostService: QuizHostService) {
+  constructor(private quizHostService: QuizHostService, private sessionStateService: SessionStateService) {
     this.quizHostService.getTopics().subscribe(data => this.topics.set(data));
     this.quizHostService.getQuizzes().subscribe(data => this.quizzes.set(data));
+    this.selectedTopic = this.sessionStateService.selectedTopic;
   }
 
   onTopicSelected(topicId: string) {
-    this.selectedTopic.set(topicId);
+    console.log('topicId ', topicId)
+    this.sessionStateService.selectedTopic.set(topicId);
   }
 }
