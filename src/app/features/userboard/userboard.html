@@ -9,7 +9,7 @@
   <div class="userboard-section">
     <div class="userboard-label">Level</div>
     <div class="userboard-values">
-      <span>{{ level() }}</span>
+      <span *ngFor="let level of makedLevels()" class="chip"> {{ level }}</span>
     </div>
   </div>
 

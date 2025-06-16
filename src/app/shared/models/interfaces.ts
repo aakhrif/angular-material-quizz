@@ -28,3 +28,9 @@ export const TECH_ICONS: Record<string, string> = {
     ng: 'assets/icons/ng.svg',
     docker: 'assets/icons/docker.svg',
 };
+
+export enum QuizLevel {
+    Beginner = "Beginner",
+    Intermediate = "Intermediate",
+    Advanced = "Advanced"
+}

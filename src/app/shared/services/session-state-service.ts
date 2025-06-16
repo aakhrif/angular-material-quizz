@@ -1,4 +1,7 @@
 import { Injectable, signal, WritableSignal } from '@angular/core';
+import { QuizzesByTopic, Topic } from '../models/interfaces';
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 interface UserQuizBoard {
   topic: string,
@@ -10,10 +13,19 @@ interface UserQuizBoard {
   providedIn: 'root'
 })
 export class SessionStateService {
- // topic (language) - level - score
-  userBoardState = signal<UserQuizBoard>({ topic:"aws", level: "Beginner", score: 0});
+  userBoardState = signal<UserQuizBoard>({ topic: "aws", level: "Beginner", score: 0 });
   readonly selectedTopic: WritableSignal<string> = signal('aws');
-  constructor() { }
+  readonly selectedLevel: WritableSignal<string> = signal('Beginner');
+
+  constructor(private http: HttpClient) { }
+
+  getQuizzes(): Observable<QuizzesByTopic> {
+    return this.http.get<QuizzesByTopic>('/api/quizzes');
+  }
+
+  getTopics(): Observable<Topic[]> {
+    return this.http.get<Topic[]>('/api/quizzes-topics')
+  }
 
   updateUserBoardState(): void {
     this.userBoardState.update((s) => ({

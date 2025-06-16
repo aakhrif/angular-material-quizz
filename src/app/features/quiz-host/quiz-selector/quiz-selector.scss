@@ -2,5 +2,29 @@
     display: flex;
     justify-content: center;
     gap: 0.5rem;
-    margin-top: 5rem;
+    margin-top: 1rem;
+}
+
+.level-cards {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  .card {
+    padding: 1rem 2rem;
+    border: 2px solid #ccc;
+    border-radius: 12px;
+    cursor: pointer;
+    background: white;
+    font-weight: 500;
+    transition: 0.2s;
+
+    &.active {
+      background-color: #3f51b5;
+      color: white;
+      border-color: #3f51b5;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+  }
 }

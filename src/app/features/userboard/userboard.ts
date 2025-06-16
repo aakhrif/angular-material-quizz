@@ -11,11 +11,12 @@ import { CommonModule } from '@angular/common';
 export class Userboard {
 
   readonly quiz = signal<string>("");
-  readonly level = signal<string>("");
   readonly score = signal<string>("");
   readonly makedTopics = signal<string[]>([]);
+  readonly makedLevels = signal<string[]>([]);
 
   readonly selectedTopic!: Signal<string>;
+  readonly level!: Signal<string>;
   
 
   constructor(private sessionStateService: SessionStateService) {
@@ -23,6 +24,10 @@ export class Userboard {
       const currentTopic = this.sessionStateService.selectedTopic();
       if (!this.makedTopics().includes(currentTopic)) {
         this.makedTopics.set([...this.makedTopics(), currentTopic]);
+      }
+      const currentLevel = this.sessionStateService.selectedLevel();
+      if (!this.makedLevels().includes(currentLevel)) {
+        this.makedLevels.set([...this.makedLevels(), currentLevel]);
       }
     });
   }

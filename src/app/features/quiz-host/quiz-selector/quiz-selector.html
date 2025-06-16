@@ -1,4 +1,11 @@
 <div class="container">
+    <button matButton="outlined" *ngFor="let level of levels" (click)="selectLevel.emit(level)"> {{ level }} </button>
+</div>
+<div class="container">
     <button matButton="outlined" *ngFor="let topic of topics" (click)="selectTopic.emit(topic.id)"
         class="menu-card"><app-tech-icon [type]="topic.id"></app-tech-icon> {{topic.name}} </button>
 </div>
+
+<!-- (click)="onLevelSelect(lvl)"
+            [class.active]="lvl === selectedLevel()"
+            class="card" -->

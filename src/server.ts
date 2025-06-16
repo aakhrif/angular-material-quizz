@@ -67,7 +67,8 @@ app.use('/api/quizzes', (req, res) => {
           { id: "c", text: "Stricter type checking for external packages", isCorrect: false },
           { id: "d", text: "Enables top-level await in all files", isCorrect: false }
         ],
-        selectMultiple: false
+        selectMultiple: false,
+        level: "Beginner"
       },
       {
         id: 2,
@@ -78,7 +79,8 @@ app.use('/api/quizzes', (req, res) => {
           { id: "c", text: "Responding to HTTP requests", isCorrect: true },
           { id: "d", text: "Defining interfaces", isCorrect: false }
         ],
-        selectMultiple: true
+        selectMultiple: true,
+        level: "Beginner"
       },
       {
         id: 3,
@@ -89,7 +91,8 @@ app.use('/api/quizzes', (req, res) => {
           { id: "c", text: "Restricts access to same-origin only", isCorrect: false },
           { id: "d", text: "Allows only GET requests", isCorrect: false }
         ],
-        selectMultiple: false
+        selectMultiple: false,
+        level: "Beginner"
       },
       {
         id: 4,
@@ -100,7 +103,8 @@ app.use('/api/quizzes', (req, res) => {
           { id: "c", text: "`allowJs`", isCorrect: false },
           { id: "d", text: "`forceConsistentCasingInFileNames`", isCorrect: true }
         ],
-        selectMultiple: true
+        selectMultiple: true,
+        level: "Beginner"
       }
     ],
     aws: [
@@ -113,7 +117,8 @@ app.use('/api/quizzes', (req, res) => {
           { id: "c", text: "Amazon RDS", isCorrect: false },
           { id: "d", text: "Amazon VPC", isCorrect: false }
         ],
-        selectMultiple: false
+        selectMultiple: false,
+        level: "Beginner"
       },
       {
         id: 2,
@@ -124,7 +129,8 @@ app.use('/api/quizzes', (req, res) => {
           { id: "c", text: "AWS Fargate", isCorrect: true },
           { id: "d", text: "Amazon Lightsail", isCorrect: false }
         ],
-        selectMultiple: true
+        selectMultiple: true,
+        level: "Beginner"
       }
     ]
     ,
@@ -138,7 +144,8 @@ app.use('/api/quizzes', (req, res) => {
           { id: "c", text: "Server-side rendering only", isCorrect: false },
           { id: "d", text: "No change detection mechanism", isCorrect: false }
         ],
-        selectMultiple: false
+        selectMultiple: false,
+        level: "Beginner"
       },
       {
         id: 2,
@@ -149,7 +156,8 @@ app.use('/api/quizzes', (req, res) => {
           { id: "c", text: "@Component", isCorrect: true },
           { id: "d", text: "@Directive", isCorrect: false }
         ],
-        selectMultiple: false
+        selectMultiple: false,
+        level: "Beginner"
       }
     ]
 
