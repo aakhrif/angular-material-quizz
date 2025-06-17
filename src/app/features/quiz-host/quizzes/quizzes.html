@@ -1,8 +1,9 @@
 <div class="container">
-  <div *ngIf="quizzes()['length']">
-    <div *ngIf="currentQuiz() as quiz">
+  @defer (when hasQuizzes()) {
+    <ng-container *ngIf="currentQuiz() as quiz">
       <h2>{{ quiz.question }}</h2>
 
+      <!-- Single Choice -->
       <mat-radio-group
         *ngIf="!quiz.selectMultiple"
         [value]="selectedSingleChoice()"
@@ -17,6 +18,7 @@
         </mat-radio-button>
       </mat-radio-group>
 
+      <!-- Multi Choice -->
       <div *ngIf="quiz.selectMultiple">
         <mat-checkbox
           *ngFor="let choice of quiz.choices"
@@ -27,19 +29,18 @@
         </mat-checkbox>
       </div>
 
-      <div class="feedback-space">
-        <div *ngIf="answerChecked()">
-          <p
-            [ngClass]="{
+      <!-- Feedback -->
+      <div class="feedback-space" *ngIf="answerChecked()">
+        <p [ngClass]="{
               correct: isLastAnswerCorrect(),
               wrong: !isLastAnswerCorrect()
             }"
-          >
-            {{ isLastAnswerCorrect() ? '✅ Correct!' : '❌ Wrong, Try again!' }}
-          </p>
-        </div>
+        >
+          {{ isLastAnswerCorrect() ? '✅ Correct!' : '❌ Wrong, Try again!' }}
+        </p>
       </div>
 
+      <!-- Action Buttons -->
       <div class="action-space">
         <button
           *ngIf="!isLastAnswerCorrect()"
@@ -58,6 +59,8 @@
           <mat-icon>directions_run</mat-icon>Go Next
         </button>
       </div>
-    </div>
-  </div>
+    </ng-container>
+  } @placeholder {
+    <p>Loading Quizzes...</p>
+  }
 </div>

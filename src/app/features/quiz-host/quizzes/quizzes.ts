@@ -56,4 +56,8 @@ export class Quizzes {
   onCheckboxChange(event: MatCheckboxChange, choiceId: string): void {
     this.quizzesStateService.toggleMultiChoice(choiceId, event.checked);
   }
+
+  hasQuizzes(): boolean {
+    return Object.keys(this.quizzes()).length > 0;
+  }
 }

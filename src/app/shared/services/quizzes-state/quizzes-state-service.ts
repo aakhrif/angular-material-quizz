@@ -1,6 +1,6 @@
 import { computed, effect, Injectable, Signal, signal, WritableSignal } from '@angular/core';
 import { Quiz, QuizLevel, QuizzesByTopic, Topic } from '../../models/interfaces';
-import { Observable } from 'rxjs';
+import { forkJoin, mapTo, Observable, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 interface UserQuizBoard {
@@ -29,7 +29,7 @@ export class QuizzesStateService {
   readonly quizzes = signal<QuizzesByTopic>({});
   readonly topics = signal<Topic[]>([]);
   readonly levels = signal<QuizLevel[]>([]);
-  
+
   private readonly quizInteractionState = signal<QuizInteractionState>({
     filteredQuizzes: [],
     currentIndex: 0,
@@ -53,7 +53,7 @@ export class QuizzesStateService {
     this.getTopics().subscribe(data => this.topics.set(data));
     this.getQuizzes().subscribe(data => this.quizzes.set(data));
     this.levels.set(Object.values(QuizLevel));
-    
+
     effect(() => {
       const topicId = this.selectedTopic();
       const allQuizzes = this.quizzes();
@@ -62,6 +62,19 @@ export class QuizzesStateService {
       this.updateFilteredQuizzes(topicQuizzes);
     });
   }
+
+  // loadInitialData(): Promise<void> {
+  //   return forkJoin([
+  //     this.getQuizzes(),
+  //     this.getTopics()
+  //   ]).pipe(
+  //     tap(([quizzes, topics]) => {
+  //       this.quizzes.set(quizzes);
+  //       this.topics.set(topics);
+  //     }),
+  //     mapTo(void 0)
+  //   ).toPromise();
+  // }
 
   updateFilteredQuizzes(quizzes: Quiz[]) {
     this.quizInteractionState.set({
