@@ -7,7 +7,7 @@ import { Quiz, QuizzesByTopic } from '../../../shared/models/interfaces';
 import { MatCheckbox, MatCheckboxChange } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
-import { SessionStateService } from '../../../shared/services/session-state-service';
+import { QuizzesStateService } from '../../../shared/services/quizzes-state/quizzes-state-service';
 
 @Component({
   selector: 'app-quizzes',
@@ -32,28 +32,28 @@ export class Quizzes {
   readonly isLastAnswerCorrect: Signal<boolean>;
   readonly quizzes: Signal<QuizzesByTopic>;
 
-  constructor(private sessionStateService: SessionStateService) {
-    this.currentQuiz = this.sessionStateService.currentQuiz;
-    this.selectedSingleChoice = this.sessionStateService.selectedSingleChoice;
-    this.selectedMultiChoices = this.sessionStateService.selectedMultiChoices;
-    this.answerChecked = this.sessionStateService.answerChecked;
-    this.isLastAnswerCorrect = this.sessionStateService.isLastAnswerCorrect;
-    this.quizzes = this.sessionStateService.quizzes;
+  constructor(private quizzesStateService: QuizzesStateService) {
+    this.currentQuiz = this.quizzesStateService.currentQuiz;
+    this.selectedSingleChoice = this.quizzesStateService.selectedSingleChoice;
+    this.selectedMultiChoices = this.quizzesStateService.selectedMultiChoices;
+    this.answerChecked = this.quizzesStateService.answerChecked;
+    this.isLastAnswerCorrect = this.quizzesStateService.isLastAnswerCorrect;
+    this.quizzes = this.quizzesStateService.quizzes;
   }
 
   submitAnswer(): void {
-    this.sessionStateService.submitAnswer();
+    this.quizzesStateService.submitAnswer();
   }
 
   goNext(): void {
-    this.sessionStateService.goNext();
+    this.quizzesStateService.goNext();
   }
 
   onSelectionChange(event: MatRadioChange): void {
-    this.sessionStateService.updateSingleChoice(event.value);
+    this.quizzesStateService.updateSingleChoice(event.value);
   }
 
   onCheckboxChange(event: MatCheckboxChange, choiceId: string): void {
-    this.sessionStateService.toggleMultiChoice(choiceId, event.checked);
+    this.quizzesStateService.toggleMultiChoice(choiceId, event.checked);
   }
 }

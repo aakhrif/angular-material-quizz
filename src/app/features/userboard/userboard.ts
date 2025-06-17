@@ -1,5 +1,5 @@
 import { Component, Signal, signal, effect } from '@angular/core';
-import { SessionStateService } from '../../shared/services/session-state-service';
+import { QuizzesStateService } from '../../shared/services/quizzes-state/quizzes-state-service';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -19,13 +19,13 @@ export class Userboard {
   readonly level!: Signal<string>;
   
 
-  constructor(private sessionStateService: SessionStateService) {
+  constructor(private quizzesStateService: QuizzesStateService) {
     effect(() => {
-      const currentTopic = this.sessionStateService.selectedTopic();
+      const currentTopic = this.quizzesStateService.selectedTopic();
       if (!this.makedTopics().includes(currentTopic)) {
         this.makedTopics.set([...this.makedTopics(), currentTopic]);
       }
-      const currentLevel = this.sessionStateService.selectedLevel();
+      const currentLevel = this.quizzesStateService.selectedLevel();
       if (!this.makedLevels().includes(currentLevel)) {
         this.makedLevels.set([...this.makedLevels(), currentLevel]);
       }

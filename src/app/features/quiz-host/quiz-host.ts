@@ -4,7 +4,7 @@ import { QuizSelector } from './quiz-selector/quiz-selector';
 import { Quiz, QuizLevel, Topic } from '../../shared/models/interfaces';
 import { FormsModule } from '@angular/forms';
 import { Quizzes } from './quizzes/quizzes';
-import { SessionStateService } from '../../shared/services/session-state-service';
+import { QuizzesStateService } from '../../shared/services/quizzes-state/quizzes-state-service';
 
 @Component({
   selector: 'app-quiz-host',
@@ -18,18 +18,18 @@ export class QuizHost {
   readonly topics: Signal<Topic[]>;
   readonly levels: Signal<QuizLevel[]>;
 
-  constructor(private sessionStateService: SessionStateService) {
-    this.selectedTopic = this.sessionStateService.selectedTopic;
-    this.filteredQuizzes = this.sessionStateService.getFilteredQuizzes();
-    this.topics = this.sessionStateService.topics;
-    this.levels = this.sessionStateService.levels;
+  constructor(private quizzesStateService: QuizzesStateService) {
+    this.selectedTopic = this.quizzesStateService.selectedTopic;
+    this.filteredQuizzes = this.quizzesStateService.getFilteredQuizzes();
+    this.topics = this.quizzesStateService.topics;
+    this.levels = this.quizzesStateService.levels;
   }
 
   onTopicSelected(topicId: string) {
-    this.sessionStateService.selectedTopic.set(topicId);
+    this.quizzesStateService.selectedTopic.set(topicId);
   }
 
   onLevelSelected(level: string) {
-    this.sessionStateService.selectedLevel.set(level as QuizLevel);
+    this.quizzesStateService.selectedLevel.set(level as QuizLevel);
   }
 }

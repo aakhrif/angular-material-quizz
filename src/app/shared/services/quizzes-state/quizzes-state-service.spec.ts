@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { SessionStateService } from './session-state-service';
+import { QuizzesStateService } from './quizzes-state-service';
 
-describe('SessionStateService', () => {
-  let service: SessionStateService;
+describe('QuizzesStateService', () => {
+  let service: QuizzesStateService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(SessionStateService);
+    service = TestBed.inject(QuizzesStateService);
   });
 
   it('should be created', () => {

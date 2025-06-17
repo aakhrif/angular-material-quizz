@@ -1,5 +1,5 @@
 import { computed, effect, Injectable, Signal, signal, WritableSignal } from '@angular/core';
-import { Quiz, QuizLevel, QuizzesByTopic, Topic } from '../models/interfaces';
+import { Quiz, QuizLevel, QuizzesByTopic, Topic } from '../../models/interfaces';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
@@ -21,7 +21,7 @@ interface QuizInteractionState {
 @Injectable({
   providedIn: 'root'
 })
-export class SessionStateService {
+export class QuizzesStateService {
 
   readonly selectedTopic = signal<string>('aws');
   readonly selectedLevel = signal<QuizLevel>(QuizLevel.Beginner);
